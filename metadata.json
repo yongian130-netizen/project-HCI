@@ -1,0 +1,6 @@
+{
+  "name": "Gamify Your Health",
+  "description": "Ministry of Health Malaysia (KKM) interactive mobile prototype encouraging young adults to build daily physical activity, hydration, and sleep habits.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

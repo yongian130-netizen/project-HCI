@@ -1,0 +1,2773 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Gamify Your Health — KKM Malaysia</title>
+  <meta name="description" content="Ministry of Health Malaysia (KKM) interactive mobile prototype encouraging young adults to build daily physical activity, hydration, and sleep habits." />
+  <meta property="og:title" content="Gamify Your Health — KKM Malaysia" />
+  <meta property="og:description" content="Build daily walking, hydration, and sleep habits with Ministry of Health Malaysia (KKM)." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-outer: #E4ECE9;
+      --bg-canvas: #F4F7F6;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #EAF2EF;
+      --bg-nav: rgba(255, 255, 255, 0.96);
+      --text-primary: #12211D;
+      --text-secondary: #435751;
+      --text-muted: #566B64;
+      --teal: #1F7A68;
+      --teal-hover: #176152;
+      --teal-soft: #E1F2EE;
+      --teal-text-on: #FFFFFF;
+      --gold-bg: #FEF3C7;
+      --gold-border: #F59E0B;
+      --gold-text: #78350F;
+      --gold-accent: #D97706;
+      --water: #0284C7;
+      --water-soft: #E0F2FE;
+      --sleep: #4F46E5;
+      --sleep-soft: #EEF2FF;
+      --danger: #B91C1C;
+      --danger-soft: #FEE2E2;
+      --border: #D5E2DD;
+      --shadow-card: 0 2px 10px rgba(18, 33, 29, 0.06);
+      --shadow-shell: 0 18px 48px rgba(18, 33, 29, 0.14);
+      --radius-card: 16px;
+      --radius-btn: 12px;
+      --fs-base: 15px;
+      --fs-h1: 24px;
+      --fs-h2: 18px;
+      --fs-num: 30px;
+      --fs-sm: 13px;
+      --focus-ring: #1F7A68;
+      --border-width: 1px;
+    }
+
+    [data-theme="dark"] {
+      --bg-outer: #080E0C;
+      --bg-canvas: #0F1715;
+      --bg-surface: #182521;
+      --bg-subtle: #20312C;
+      --bg-nav: rgba(24, 37, 33, 0.96);
+      --text-primary: #F1F6F4;
+      --text-secondary: #B7CBC4;
+      --text-muted: #98B0A8;
+      --teal: #279982;
+      --teal-hover: #31B097;
+      --teal-soft: #173D34;
+      --teal-text-on: #061511;
+      --gold-bg: #3B2806;
+      --gold-border: #F59E0B;
+      --gold-text: #FDE68A;
+      --gold-accent: #FBBF24;
+      --water: #38BDF8;
+      --water-soft: #0C2D3E;
+      --sleep: #818CF8;
+      --sleep-soft: #1E2046;
+      --danger: #FCA5A5;
+      --danger-soft: #451A1A;
+      --border: #2B3E38;
+      --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.28);
+      --shadow-shell: 0 20px 56px rgba(0, 0, 0, 0.55);
+      --focus-ring: #5EEAD4;
+    }
+
+    [data-theme="high-contrast"] {
+      --bg-outer: #D9D9D9;
+      --bg-canvas: #FFFFFF;
+      --bg-surface: #FFFFFF;
+      --bg-subtle: #F2F2F2;
+      --bg-nav: #FFFFFF;
+      --text-primary: #000000;
+      --text-secondary: #111111;
+      --text-muted: #1F1F1F;
+      --teal: #0E4D40;
+      --teal-hover: #08352B;
+      --teal-soft: #E6F4F0;
+      --teal-text-on: #FFFFFF;
+      --gold-bg: #FFF3B0;
+      --gold-border: #000000;
+      --gold-text: #000000;
+      --gold-accent: #7A4100;
+      --water: #004A77;
+      --water-soft: #E6F3FF;
+      --sleep: #2B2078;
+      --sleep-soft: #EFEFFF;
+      --danger: #990000;
+      --danger-soft: #FFE5E5;
+      --border: #000000;
+      --shadow-card: none;
+      --shadow-shell: 0 0 0 2px #000000;
+      --focus-ring: #000000;
+      --border-width: 2px;
+    }
+
+    [data-large-text="true"] {
+      --fs-base: 17px;
+      --fs-h1: 27px;
+      --fs-h2: 20px;
+      --fs-num: 34px;
+      --fs-sm: 15px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: var(--fs-base);
+      line-height: 1.5;
+      color: var(--text-primary);
+      background-color: var(--bg-outer);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, select {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid var(--focus-ring);
+      outline-offset: 2px;
+    }
+
+    .tabular {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* App Shell (max-width 400px phone frame) */
+    .viewport-stage {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px 0;
+    }
+
+    .phone-shell {
+      width: 100%;
+      max-width: 400px;
+      min-height: calc(100vh - 32px);
+      background-color: var(--bg-canvas);
+      border: var(--border-width) solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow-shell);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 430px) {
+      .viewport-stage {
+        padding: 0;
+      }
+      .phone-shell {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+      }
+    }
+
+    /* Top Bar */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background-color: var(--bg-nav);
+      backdrop-filter: blur(8px);
+      border-bottom: var(--border-width) solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 56px;
+    }
+
+    .brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-emblem {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background-color: var(--teal);
+      color: var(--teal-text-on);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .points-chip-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .points-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      min-height: 44px;
+      border-radius: 999px;
+      background-color: var(--gold-bg);
+      border: var(--border-width) solid var(--gold-border);
+      color: var(--gold-text);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .points-chip.pop {
+      animation: chipPop 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes chipPop {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.16); }
+      70% { transform: scale(0.96); }
+      100% { transform: scale(1); }
+    }
+
+    .points-delta {
+      position: absolute;
+      right: 6px;
+      top: 100%;
+      margin-top: 2px;
+      background-color: var(--teal);
+      color: var(--teal-text-on);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(-4px);
+      z-index: 40;
+    }
+
+    .points-delta.show {
+      animation: floatDelta 1.2s ease-out forwards;
+    }
+
+    @keyframes floatDelta {
+      0% { opacity: 0; transform: translateY(-4px) scale(0.9); }
+      20% { opacity: 1; transform: translateY(2px) scale(1); }
+      80% { opacity: 1; transform: translateY(6px); }
+      100% { opacity: 0; transform: translateY(12px); }
+    }
+
+    /* Offline Banner */
+    .offline-banner {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 7px 14px;
+      background-color: var(--gold-bg);
+      border-bottom: var(--border-width) solid var(--gold-border);
+      color: var(--gold-text);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .offline-banner.visible {
+      display: flex;
+    }
+
+    /* Main Content */
+    .main-scroll {
+      flex: 1;
+      padding: 16px 16px 96px;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    .screen-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 2px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: var(--fs-h1);
+      font-weight: 800;
+      line-height: 1.2;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: var(--fs-h2);
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: var(--fs-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Card */
+    .card {
+      background-color: var(--bg-surface);
+      border: var(--border-width) solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .kicker {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .pts-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold-text);
+      background-color: var(--gold-bg);
+      border: var(--border-width) solid var(--gold-border);
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Buttons (min-height 44px) */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 10px 16px;
+      border-radius: var(--radius-btn);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      border: var(--border-width) solid transparent;
+      transition: background-color 0.16s ease, transform 0.12s ease, border-color 0.16s ease;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background-color: var(--teal);
+      color: var(--teal-text-on);
+      border-color: var(--teal);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background-color: var(--teal-hover);
+      border-color: var(--teal-hover);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--teal);
+      border: 2px solid var(--teal);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background-color: var(--teal-soft);
+    }
+
+    .btn-full {
+      width: 100%;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-row .btn {
+      flex: 1;
+    }
+
+    /* Progress Ring & Bars */
+    .hero-progress {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ring-wrap {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      flex-shrink: 0;
+    }
+
+    .ring-svg {
+      width: 96px;
+      height: 96px;
+      transform: rotate(-90deg);
+    }
+
+    .ring-track {
+      fill: none;
+      stroke: var(--bg-subtle);
+      stroke-width: 10;
+    }
+
+    .ring-fill {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 10;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .ring-pct {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--text-primary);
+    }
+
+    .ring-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .hero-meta {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .streak-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background-color: var(--teal-soft);
+      color: var(--teal);
+      border: var(--border-width) solid var(--border);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background-color: var(--bg-subtle);
+      border: var(--border-width) solid var(--border);
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background-color: var(--teal);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .progress-bar-fill.water {
+      background-color: var(--water);
+    }
+
+    .progress-bar-fill.sleep {
+      background-color: var(--sleep);
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    /* Home Quick Tiles */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .tile-card {
+      padding: 14px;
+      gap: 10px;
+    }
+
+    .tile-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .tile-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+
+    .big-num {
+      font-size: var(--fs-num);
+      font-weight: 800;
+      line-height: 1.08;
+      color: var(--text-primary);
+    }
+
+    .num-unit {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    /* Segmented Selector */
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      padding: 4px;
+      background-color: var(--bg-subtle);
+      border: var(--border-width) solid var(--border);
+      border-radius: 14px;
+    }
+
+    .seg-btn {
+      min-height: 44px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-secondary);
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .seg-btn.active {
+      background-color: var(--teal);
+      color: var(--teal-text-on);
+    }
+
+    /* Water Glasses */
+    .glasses-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding: 4px 0;
+    }
+
+    .glass-item {
+      width: 36px;
+      height: 44px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-item.filled {
+      transform: translateY(-2px);
+    }
+
+    .glass-water-fill {
+      transition: height 0.28s ease, y 0.28s ease;
+    }
+
+    .inline-alert {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background-color: var(--gold-bg);
+      border: var(--border-width) solid var(--gold-border);
+      color: var(--gold-text);
+      font-size: 13px;
+      font-weight: 700;
+      display: none;
+    }
+
+    .inline-alert.visible {
+      display: block;
+    }
+
+    /* Voice Command Bar */
+    .voice-form {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .text-input {
+      flex: 1;
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 12px;
+      border-radius: var(--radius-btn);
+      border: var(--border-width) solid var(--border);
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .icon-btn {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 12px;
+      border-radius: var(--radius-btn);
+      border: var(--border-width) solid var(--border);
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    .voice-examples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .quick-cmd {
+      min-height: 36px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: var(--border-width) solid var(--border);
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .quick-cmd:hover {
+      background-color: var(--teal-soft);
+    }
+
+    /* Weekly Bar Chart */
+    .chart-box {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+      align-items: end;
+      height: 185px;
+      padding-top: 24px;
+      position: relative;
+    }
+
+    .chart-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      height: 100%;
+      gap: 6px;
+    }
+
+    .chart-val {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .chart-bar-wrap {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .chart-bar {
+      width: 100%;
+      max-width: 30px;
+      border-radius: 8px 8px 4px 4px;
+      background-color: var(--teal-soft);
+      border: var(--border-width) solid var(--teal);
+      transition: height 0.3s ease;
+      min-height: 8px;
+    }
+
+    .chart-bar.goal-met {
+      background-color: var(--teal);
+    }
+
+    .chart-bar.today {
+      outline: 2px solid var(--gold-border);
+      outline-offset: 1px;
+    }
+
+    .chart-day {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+
+    .chart-day.today {
+      color: var(--teal);
+    }
+
+    /* 7-Day Streak Bar */
+    .streak-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+
+    .streak-day-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 4px;
+      border-radius: 12px;
+      background-color: var(--bg-subtle);
+      border: var(--border-width) solid var(--border);
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+
+    .streak-day-box.done {
+      background-color: var(--teal);
+      border-color: var(--teal);
+      color: var(--teal-text-on);
+    }
+
+    /* Badges Grid */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .badge-card {
+      padding: 12px;
+      border-radius: 14px;
+      border: var(--border-width) solid var(--border);
+      background-color: var(--bg-subtle);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 6px;
+    }
+
+    .badge-card.unlocked {
+      background-color: var(--teal-soft);
+      border-color: var(--teal);
+    }
+
+    .badge-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-surface);
+      border: var(--border-width) solid var(--border);
+      font-size: 20px;
+    }
+
+    .badge-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .badge-status {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    /* Voucher Card */
+    .voucher-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: var(--border-width) solid var(--border);
+    }
+
+    .voucher-row:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .voucher-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .voucher-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .voucher-sub {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .redeem-code {
+      margin-top: 4px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--teal);
+    }
+
+    /* Profile Settings Rows */
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 48px;
+      padding: 8px 0;
+      border-top: var(--border-width) solid var(--border);
+    }
+
+    .setting-row:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .setting-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .setting-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .setting-desc {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    /* Accessible Toggle Switch */
+    .switch-btn {
+      width: 52px;
+      height: 32px;
+      min-height: 44px;
+      padding: 6px 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .switch-track {
+      width: 50px;
+      height: 28px;
+      border-radius: 999px;
+      background-color: var(--bg-subtle);
+      border: 2px solid var(--border);
+      position: relative;
+      transition: background-color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .switch-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--text-secondary);
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.18s ease, background-color 0.18s ease;
+    }
+
+    .switch-btn[aria-checked="true"] .switch-track {
+      background-color: var(--teal);
+      border-color: var(--teal);
+    }
+
+    .switch-btn[aria-checked="true"] .switch-thumb {
+      transform: translateX(22px);
+      background-color: var(--teal-text-on);
+    }
+
+    /* Bottom Navigation (6 tabs) */
+    .bottom-nav {
+      position: sticky;
+      bottom: 0;
+      z-index: 30;
+      background-color: var(--bg-nav);
+      backdrop-filter: blur(8px);
+      border-top: var(--border-width) solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      padding: 4px 2px env(safe-area-inset-bottom, 4px);
+    }
+
+    .nav-btn {
+      min-height: 54px;
+      padding: 6px 2px;
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      cursor: pointer;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .nav-btn.active {
+      color: var(--teal);
+      background-color: var(--teal-soft);
+      font-weight: 800;
+    }
+
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Toast with UNDO */
+    .toast-host {
+      position: fixed;
+      left: 50%;
+      bottom: 78px;
+      transform: translateX(-50%);
+      width: calc(100% - 32px);
+      max-width: 368px;
+      z-index: 60;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+    }
+
+    .toast {
+      pointer-events: auto;
+      width: 100%;
+      background-color: #13221E;
+      color: #FFFFFF;
+      border: 2px solid var(--teal);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.25);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    [data-theme="high-contrast"] .toast {
+      background-color: #000000;
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+
+    .toast.visible {
+      display: flex;
+      animation: toastSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes toastSlide {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .toast-undo {
+      min-height: 44px;
+      padding: 6px 14px;
+      border-radius: 10px;
+      border: 1px solid #FCD34D;
+      background-color: #FCD34D;
+      color: #291800;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(10, 20, 17, 0.62);
+      backdrop-filter: blur(3px);
+      z-index: 80;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 360px;
+      background-color: var(--bg-surface);
+      border: var(--border-width) solid var(--border);
+      border-radius: 20px;
+      padding: 22px 18px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-align: center;
+      animation: modalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.94); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .tick-circle {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background-color: var(--teal-soft);
+      border: 2px solid var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tick-path {
+      stroke: var(--teal);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+    }
+
+    .modal-backdrop.open .tick-path {
+      animation: drawTick 0.45s 0.1s ease-out forwards;
+    }
+
+    @keyframes drawTick {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .modal-pts-badge {
+      align-self: center;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--gold-text);
+      background-color: var(--gold-bg);
+      border: var(--border-width) solid var(--gold-border);
+      padding: 6px 16px;
+      border-radius: 999px;
+    }
+
+    .sleep-preset-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .preset-btn {
+      min-height: 44px;
+      border-radius: 10px;
+      border: var(--border-width) solid var(--border);
+      background-color: var(--bg-subtle);
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .preset-btn.selected {
+      background-color: var(--sleep);
+      border-color: var(--sleep);
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport-stage">
+    <div class="phone-shell" id="appShell">
+
+      <!-- Persistent Top Bar -->
+      <header class="top-bar">
+        <div class="brand-lockup">
+          <div class="brand-emblem" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 21s-7-4.35-9-9.5C1.5 7.7 4.4 4 8.2 4c2 0 3.4 1 3.8 2 .4-1 1.8-2 3.8-2C19.6 4 22.5 7.7 21 11.5 19 16.65 12 21 12 21z"/>
+              <path d="M8 12h2.2l1.3-2.5 1.8 5 1.3-2.5H16"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Gamify Your Health</span>
+            <span class="brand-sub">KKM Malaysia · Sihat Aktif</span>
+          </div>
+        </div>
+        <div class="points-chip-wrap">
+          <button type="button" class="points-chip tabular" id="topPointsChip" aria-label="Total points, tap to view Rewards">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/>
+            </svg>
+            <span id="topPointsText">240 points</span>
+          </button>
+          <span class="points-delta tabular" id="pointsDelta">+0</span>
+        </div>
+      </header>
+
+      <!-- Offline Banner -->
+      <div class="offline-banner" id="offlineBanner" role="status" aria-live="polite">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+          <path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0 1 19 12.55M5 12.55a10.94 10.94 0 0 1 5.17-2.39M10.71 5.05A16 16 0 0 1 22.58 9M1.42 9a15.91 15.91 0 0 1 4.7-2.88M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/>
+        </svg>
+        <span>Data saved on this phone and will sync later</span>
+      </div>
+
+      <!-- Main Content Screens -->
+      <main class="main-scroll">
+
+        <!-- 1. HOME SCREEN -->
+        <section class="screen active" id="screen-home" aria-label="Home">
+          <div class="screen-header">
+            <h1 id="homeGreeting">Selamat petang, Aiman</h1>
+            <p class="subtitle" id="homeLevelSubtitle">Moderate level · Quick daily check-in</p>
+          </div>
+
+          <!-- Daily Progress Ring Card -->
+          <div class="card">
+            <div class="hero-progress">
+              <div class="ring-wrap" aria-label="Daily progress percentage">
+                <svg class="ring-svg" viewBox="0 0 100 100">
+                  <circle class="ring-track" cx="50" cy="50" r="40" />
+                  <circle class="ring-fill" id="homeRingFill" cx="50" cy="50" r="40" stroke-dasharray="251.3" stroke-dashoffset="125" />
+                </svg>
+                <div class="ring-center">
+                  <span class="ring-pct tabular" id="homeRingPct">44%</span>
+                  <span class="ring-label">Daily goal</span>
+                </div>
+              </div>
+              <div class="hero-meta">
+                <span class="streak-chip tabular" id="homeStreakChip">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M13.5 2s.5 3.5-2 6c-2 2-2.5 4.5-1.5 6.5 0-2 1.5-3.5 1.5-3.5s.5 2.5 2 3.5c1.2.8 2 2 1.5 3.5 2-1.5 3.5-4 3-7.5-.5-3-4.5-8.5-4.5-8.5zM8.5 10.5C6.5 12.5 6 15.5 7 18c1 2 3.2 3.5 5.5 3.5 2.8 0 5-2 5.5-4.5-1 1-2.5 1.5-4 1-2-.6-3.2-2.5-2.5-4.5-.8.6-1.5.5-2-.5-.5-1-.5-2-1-2.5z"/>
+                  </svg>
+                  <span id="homeStreakText">3-day streak</span>
+                </span>
+                <strong id="homeProgressSummary" style="font-size:15px;">Keep going — 1 tap logs progress</strong>
+                <span class="kicker" id="homeGoalDetails">Walking 45% · Water 43% · Sleep pending</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Challenge of the Day -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Challenge of the Day</div>
+                <h2 id="cotdTitle">Walking Challenge</h2>
+              </div>
+              <span class="pts-label tabular" id="cotdPts">+80 points</span>
+            </div>
+            <p class="subtitle" id="cotdDesc">Reach 7,000 steps today to earn your daily bonus.</p>
+            <div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="cotdBar" style="width:45%"></div>
+              </div>
+              <div class="progress-meta tabular" style="margin-top:6px;">
+                <span id="cotdProgressText">3,172 / 7,000 steps</span>
+                <span id="cotdPctText">45%</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-full" id="btnViewChallenge">View challenge</button>
+          </div>
+
+          <!-- Steps & Water Quick Tiles -->
+          <div class="tile-grid">
+            <div class="card tile-card">
+              <div class="tile-top">
+                <span class="tile-title">Steps</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.2" aria-hidden="true">
+                  <path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/>
+                  <path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="big-num tabular" id="homeStepsVal">3,172</div>
+                <div class="num-unit tabular" id="homeStepsTarget">/ 7,000</div>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="homeStepsBar" style="width:45%"></div>
+              </div>
+              <button type="button" class="btn btn-primary btn-full" id="btnHomeAddSteps">+500 steps</button>
+            </div>
+
+            <div class="card tile-card">
+              <div class="tile-top">
+                <span class="tile-title">Water</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--water)" stroke-width="2.2" aria-hidden="true">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="big-num tabular" id="homeWaterVal">3</div>
+                <div class="num-unit tabular" id="homeWaterTarget">/ 7 glasses</div>
+              </div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill water" id="homeWaterBar" style="width:43%"></div>
+              </div>
+              <button type="button" class="btn btn-primary btn-full" id="btnHomeAddWater">+1 glass</button>
+            </div>
+          </div>
+
+          <!-- Sleep Row -->
+          <div class="card">
+            <div class="card-header-row" style="align-items:center;">
+              <div>
+                <div class="kicker" id="homeSleepTarget">Sleep · Target by 11:00 PM</div>
+                <h2 id="homeSleepStatus">Not logged tonight</h2>
+              </div>
+              <button type="button" class="btn btn-outline" id="btnHomeLogSleep">Log bedtime</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. CHALLENGES SCREEN -->
+        <section class="screen" id="screen-challenges" aria-label="Challenges">
+          <div class="screen-header">
+            <h1>Daily Challenges</h1>
+            <p class="subtitle">Adjusts to your level · Pick a challenge to earn points</p>
+          </div>
+
+          <!-- Easy / Moderate / Hard Selector -->
+          <div class="card" style="padding:12px;">
+            <div class="kicker" style="margin-bottom:4px;">Difficulty level (adjusts daily targets)</div>
+            <div class="segmented" role="group" aria-label="Challenge difficulty">
+              <button type="button" class="seg-btn" data-diff="easy">Easy</button>
+              <button type="button" class="seg-btn active" data-diff="moderate">Moderate</button>
+              <button type="button" class="seg-btn" data-diff="hard">Hard</button>
+            </div>
+            <div class="kicker tabular" id="diffTargetsSummary" style="margin-top:4px;">
+              Targets: 7,000 steps · 7 glasses · Sleep by 11:00 PM
+            </div>
+          </div>
+
+          <!-- Walking Challenge Card -->
+          <div class="card" id="challenge-card-walking">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Physical Activity</div>
+                <h2>Walking</h2>
+              </div>
+              <span class="pts-label tabular">+80 points</span>
+            </div>
+            <p class="subtitle" id="chWalkDesc">Walk 7,000 steps today (brisk campus walk or stairs).</p>
+            <div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="chWalkBar" style="width:45%"></div>
+              </div>
+              <div class="progress-meta tabular" style="margin-top:6px;">
+                <span id="chWalkText">3,172 / 7,000 steps</span>
+                <span id="chWalkPct">45%</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-full" id="btnStartWalking">Start challenge</button>
+          </div>
+
+          <!-- Hydration Challenge Card -->
+          <div class="card" id="challenge-card-hydration">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Daily Hydration</div>
+                <h2>Hydration</h2>
+              </div>
+              <span class="pts-label tabular">+40 points</span>
+            </div>
+            <p class="subtitle" id="chWaterDesc">Drink 7 glasses of plain water today.</p>
+            <div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill water" id="chWaterBar" style="width:43%"></div>
+              </div>
+              <div class="progress-meta tabular" style="margin-top:6px;">
+                <span id="chWaterText">3 / 7 glasses</span>
+                <span id="chWaterPct">43%</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-full" id="btnStartHydration">Start challenge</button>
+          </div>
+
+          <!-- Sleep Challenge Card -->
+          <div class="card" id="challenge-card-sleep">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Rest &amp; Recovery</div>
+                <h2>Sleep</h2>
+              </div>
+              <span class="pts-label tabular">+70 points</span>
+            </div>
+            <p class="subtitle" id="chSleepDesc">Log bedtime by 11:00 PM for 7–8 hours rest.</p>
+            <div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill sleep" id="chSleepBar" style="width:0%"></div>
+              </div>
+              <div class="progress-meta tabular" style="margin-top:6px;">
+                <span id="chSleepText">Not logged yet</span>
+                <span id="chSleepPct">0%</span>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary btn-full" id="btnStartSleep">Start challenge</button>
+          </div>
+        </section>
+
+        <!-- 3. ACTIVITY TRACKER SCREEN -->
+        <section class="screen" id="screen-activity" aria-label="Activity tracker">
+          <div class="screen-header">
+            <h1>Activity Tracker</h1>
+            <p class="subtitle">Fast logging or hands-free voice command</p>
+          </div>
+
+          <!-- Voice Command Card -->
+          <div class="card">
+            <div>
+              <h2>Quick Voice Command</h2>
+              <p class="subtitle">Type or speak a command like "add 2 glasses of water"</p>
+            </div>
+            <form class="voice-form" id="voiceForm">
+              <input type="text" class="text-input" id="voiceInput" placeholder='e.g. "add 2 glasses of water"' aria-label="Voice command input" />
+              <button type="button" class="icon-btn" id="btnVoiceMic" title="Use microphone" aria-label="Start voice recognition">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" y1="19" x2="12" y2="23"/>
+                  <line x1="8" y1="23" x2="16" y2="23"/>
+                </svg>
+              </button>
+              <button type="submit" class="btn btn-primary">Run</button>
+            </form>
+            <div class="voice-examples">
+              <button type="button" class="quick-cmd" data-cmd="add 2 glasses of water">"add 2 glasses of water"</button>
+              <button type="button" class="quick-cmd" data-cmd="add 500 steps">"add 500 steps"</button>
+              <button type="button" class="quick-cmd" data-cmd="log bedtime 10:45 pm">"log bedtime 10:45 pm"</button>
+            </div>
+          </div>
+
+          <!-- Water Intake Card -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Hydration</div>
+                <h2>Water Intake</h2>
+              </div>
+              <span class="big-num tabular" id="actWaterCount" style="font-size:24px;">3 / 7</span>
+            </div>
+            <div class="glasses-grid" id="glassesGrid" aria-label="Water glasses visual tracker"></div>
+            <div class="inline-alert" id="waterLimitAlert" role="alert">
+              Daily water goal reached! You cannot exceed your daily glass target.
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="btnActAddWater">+ Add</button>
+              <button type="button" class="btn btn-outline" id="btnActRemoveWater">− Remove</button>
+            </div>
+          </div>
+
+          <!-- Walking Card -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Daily Movement</div>
+                <h2>Walking Steps</h2>
+              </div>
+              <span class="big-num tabular" id="actStepsCount" style="font-size:22px;">3,172 / 7,000</span>
+            </div>
+            <div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="actStepsBar" style="width:45%"></div>
+              </div>
+              <div class="progress-meta tabular" style="margin-top:6px;">
+                <span id="actStepsPct">45% of daily goal</span>
+                <span id="actWearableStatus">Phone pedometer ready</span>
+              </div>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="btnActAddSteps">Simulate +500 steps</button>
+              <button type="button" class="btn btn-outline" id="btnSyncWearable">Sync wearable</button>
+            </div>
+          </div>
+
+          <!-- Bedtime Log Card -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker" id="actSleepTargetLabel">Sleep · Target by 11:00 PM</div>
+                <h2>Bedtime Log</h2>
+              </div>
+              <span class="kicker tabular" id="actSleepLoggedVal">Not logged</span>
+            </div>
+            <div class="sleep-preset-row">
+              <button type="button" class="preset-btn selected" data-bedtime="22:30">10:30 PM</button>
+              <button type="button" class="preset-btn" data-bedtime="23:00">11:00 PM</button>
+              <button type="button" class="preset-btn" data-bedtime="23:30">11:30 PM</button>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="btnActLogSleep">Log bedtime</button>
+              <button type="button" class="btn btn-outline" id="btnActUndoSleep">Undo</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. PROGRESS SCREEN -->
+        <section class="screen" id="screen-progress" aria-label="Progress">
+          <div class="screen-header">
+            <h1>Weekly Progress</h1>
+            <p class="subtitle">Clear numbers help keep your momentum strong</p>
+          </div>
+
+          <!-- Weekly Average Summary -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">7-Day Average</div>
+                <div class="big-num tabular" id="progWeeklyAvg">6,423 <span class="num-unit">steps / day</span></div>
+              </div>
+              <span class="streak-chip tabular" id="progTargetChip">Goal: 7,000</span>
+            </div>
+            <p class="subtitle tabular" id="progWeeklyTotal">Total this week: 44,962 steps across 7 days</p>
+          </div>
+
+          <!-- Weekly Steps Bar Chart with Value Labels -->
+          <div class="card">
+            <div class="card-header-row">
+              <h2>Weekly Steps Chart</h2>
+              <span class="kicker">Values shown per day</span>
+            </div>
+            <div class="chart-box" id="weeklyBarChart" aria-label="Weekly steps bar chart"></div>
+          </div>
+
+          <!-- 7-Day Streak Bar -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Consistency Tracker</div>
+                <h2>7-Day Streak Bar</h2>
+              </div>
+              <span class="streak-chip tabular" id="progStreakBadge">3-day streak</span>
+            </div>
+            <div class="streak-days" id="streakBarGrid"></div>
+            <p class="subtitle" id="progStreakNote">Complete today's Walking or Hydration goal to extend your streak to 4 days.</p>
+          </div>
+        </section>
+
+        <!-- 5. REWARDS SCREEN -->
+        <section class="screen" id="screen-rewards" aria-label="Rewards">
+          <div class="screen-header">
+            <h1>Rewards &amp; Badges</h1>
+            <p class="subtitle">Earn points from daily challenges and redeem local vouchers</p>
+          </div>
+
+          <!-- Total Points Card -->
+          <div class="card" style="background-color: var(--gold-bg); border-color: var(--gold-border);">
+            <div class="card-header-row" style="align-items:center;">
+              <div>
+                <div class="kicker" style="color: var(--gold-text);">Available Balance</div>
+                <div class="big-num tabular" id="rewardsTotalPts" style="color: var(--gold-text);">240 points</div>
+              </div>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="var(--gold-accent)" aria-hidden="true">
+                <path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-1.01L12 2z"/>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Next Achievement -->
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <div class="kicker">Next Achievement</div>
+                <h2>Complete 5 daily challenges</h2>
+              </div>
+              <span class="pts-label tabular">+100 points</span>
+            </div>
+            <div>
+              <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="nextAchBar" style="width:40%"></div>
+              </div>
+              <div class="progress-meta tabular" style="margin-top:6px;">
+                <span id="nextAchCount">2 / 5 completed</span>
+                <span id="nextAchPct">40%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Badges -->
+          <div class="card">
+            <h2>Your Badges</h2>
+            <div class="badge-grid" id="badgesGrid"></div>
+          </div>
+
+          <!-- Voucher Store -->
+          <div class="card">
+            <div class="card-header-row">
+              <h2>Voucher Store</h2>
+              <span class="kicker">KKM Partner Perks</span>
+            </div>
+            <div id="voucherList"></div>
+          </div>
+        </section>
+
+        <!-- 6. PROFILE SCREEN -->
+        <section class="screen" id="screen-profile" aria-label="Profile">
+          <div class="screen-header">
+            <h1>Profile &amp; Settings</h1>
+            <p class="subtitle">Personalise targets, reminders, and privacy</p>
+          </div>
+
+          <!-- User Info -->
+          <div class="card">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div style="width:54px; height:54px; border-radius:50%; background:var(--teal); color:var(--teal-text-on); display:flex; align-items:center; justify-content:center; font-size:20px; font-weight:800; flex-shrink:0;">
+                AH
+              </div>
+              <div style="min-width:0;">
+                <h2 style="margin-bottom:2px;">Aiman Hakim</h2>
+                <div class="kicker">Age 21 · Undergraduate · UKM Bangi</div>
+                <div class="kicker" id="profileMemberMeta">Active level: Moderate · 240 points</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Difficulty & Reminders -->
+          <div class="card">
+            <h2>Challenge &amp; Reminders</h2>
+            <div class="kicker">Difficulty setting</div>
+            <div class="segmented" role="group" aria-label="Profile difficulty setting">
+              <button type="button" class="seg-btn" data-diff="easy">Easy</button>
+              <button type="button" class="seg-btn active" data-diff="moderate">Moderate</button>
+              <button type="button" class="seg-btn" data-diff="hard">Hard</button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <label class="setting-title" for="reminderTimePicker">Daily reminder (once a day)</label>
+                <div class="setting-desc">No spam — one gentle check-in per day</div>
+              </div>
+              <input type="time" id="reminderTimePicker" class="text-input" value="20:00" style="flex:0 0 auto; width:120px; text-align:center;" />
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <div class="setting-title">Smart reminder</div>
+                <div class="setting-desc">Only remind if today's goal isn't done yet</div>
+              </div>
+              <button type="button" class="switch-btn" role="switch" aria-checked="true" id="toggleSmartReminder" aria-label="Smart reminder toggle">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Display & Accessibility -->
+          <div class="card">
+            <h2>Display &amp; Accessibility</h2>
+            <div class="kicker">Display mode</div>
+            <div class="segmented" role="group" aria-label="Display mode switch">
+              <button type="button" class="seg-btn active" data-theme-btn="light">Light</button>
+              <button type="button" class="seg-btn" data-theme-btn="dark">Dark</button>
+              <button type="button" class="seg-btn" data-theme-btn="high-contrast">High-contrast</button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <div class="setting-title">Larger text</div>
+                <div class="setting-desc">Increases body and heading size for easier reading</div>
+              </div>
+              <button type="button" class="switch-btn" role="switch" aria-checked="false" id="toggleLargerText" aria-label="Larger text toggle">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <div class="setting-title">Offline mode</div>
+                <div class="setting-desc">Save entries locally on this phone without mobile data</div>
+              </div>
+              <button type="button" class="switch-btn" role="switch" aria-checked="false" id="toggleOfflineMode" aria-label="Offline mode toggle">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Privacy & Data Protection (OFF by default) -->
+          <div class="card">
+            <div>
+              <h2>Privacy &amp; Data Protection</h2>
+              <p class="subtitle">Protected under Malaysia PDPA. All optional sharing is off by default.</p>
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <div class="setting-title">Anonymised KKM health research</div>
+                <div class="setting-desc">Share non-identifiable step trends for public health</div>
+              </div>
+              <button type="button" class="switch-btn" role="switch" aria-checked="false" id="togglePrivacyResearch" aria-label="Anonymised KKM health research toggle">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <div class="setting-title">Background wearable sync</div>
+                <div class="setting-desc">Automatically import steps when Bluetooth is on</div>
+              </div>
+              <button type="button" class="switch-btn" role="switch" aria-checked="false" id="togglePrivacyWearable" aria-label="Background wearable sync toggle">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </button>
+            </div>
+            <div class="setting-row">
+              <div class="setting-text">
+                <div class="setting-title">Campus wellness tips</div>
+                <div class="setting-desc">Allow personalised activity suggestions</div>
+              </div>
+              <button type="button" class="switch-btn" role="switch" aria-checked="false" id="togglePrivacyTips" aria-label="Campus wellness tips toggle">
+                <span class="switch-track"><span class="switch-thumb"></span></span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Bottom Navigation (6 tabs) -->
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button type="button" class="nav-btn active" data-tab="home" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
+          </svg>
+          <span>Home</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="challenges">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+          </svg>
+          <span>Challenges</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="activity">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span>Activity</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="progress">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Progress</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="rewards">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 12v10H4V12"/>
+            <rect x="2" y="7" width="20" height="5"/>
+            <path d="M12 22V7"/>
+            <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/>
+            <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>
+          </svg>
+          <span>Rewards</span>
+        </button>
+        <button type="button" class="nav-btn" data-tab="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          <span>Profile</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Toast with UNDO -->
+  <div class="toast-host" aria-live="polite">
+    <div class="toast" id="toastBox">
+      <span id="toastMsg">Logged!</span>
+      <button type="button" class="toast-undo" id="toastUndoBtn">UNDO</button>
+    </div>
+  </div>
+
+  <!-- Challenge Completion Modal -->
+  <div class="modal-backdrop" id="completionModal" role="dialog" aria-modal="true" aria-labelledby="compModalTitle">
+    <div class="modal-card">
+      <div class="tick-circle" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 24 24">
+          <path class="tick-path" d="M5 13l4 4L19 7"/>
+        </svg>
+      </div>
+      <h2 id="compModalTitle" style="font-size:24px;">Well done!</h2>
+      <p class="subtitle" id="compModalDesc">You completed today's Walking challenge.</p>
+      <div class="modal-pts-badge tabular" id="compModalPts">+80 points</div>
+      <div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width:100%"></div>
+        </div>
+        <div class="progress-meta tabular" style="margin-top:6px;">
+          <span id="compModalChallengeName">Walking Challenge</span>
+          <span>100%</span>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:4px;">
+        <button type="button" class="btn btn-primary" id="btnCompViewRewards">View rewards</button>
+        <button type="button" class="btn btn-outline" id="btnCompBackHome">Back to home</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voucher Confirm Dialog -->
+  <div class="modal-backdrop" id="voucherModal" role="dialog" aria-modal="true" aria-labelledby="voucherModalTitle">
+    <div class="modal-card">
+      <h2 id="voucherModalTitle">Confirm redemption</h2>
+      <p class="subtitle" id="voucherModalDesc">Redeem this voucher using your points?</p>
+      <div class="modal-pts-badge tabular" id="voucherModalCost">-150 points</div>
+      <div class="kicker tabular" id="voucherModalBalance">Remaining balance after redeem: 90 points</div>
+      <div class="btn-row" style="margin-top:4px;">
+        <button type="button" class="btn btn-primary" id="btnConfirmRedeem">Confirm redeem</button>
+        <button type="button" class="btn btn-outline" id="btnCancelRedeem">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // All state kept strictly in JS variables (no localStorage)
+      const DIFFICULTY_PRESETS = {
+        easy: { label: 'Easy', stepsTarget: 5000, waterTarget: 6, sleepTarget: '11:30 PM', sleepMinutesLimit: 23 * 60 + 30 },
+        moderate: { label: 'Moderate', stepsTarget: 7000, waterTarget: 7, sleepTarget: '11:00 PM', sleepMinutesLimit: 23 * 60 },
+        hard: { label: 'Hard', stepsTarget: 10000, waterTarget: 8, sleepTarget: '10:30 PM', sleepMinutesLimit: 22 * 60 + 30 }
+      };
+
+      const state = {
+        activeTab: 'home',
+        difficulty: 'moderate',
+        points: 240,
+        streakDays: 3,
+        steps: 3172,
+        water: 3,
+        selectedBedtime: '22:30',
+        loggedBedtime: null, // e.g. '22:30'
+        dailyChallengesCompletedCount: 2, // toward "Complete 5 daily challenges"
+        weeklyHistory: [
+          { day: 'Mon', steps: 6420, streakDone: true },
+          { day: 'Tue', steps: 7150, streakDone: false },
+          { day: 'Wed', steps: 5890, streakDone: false },
+          { day: 'Thu', steps: 7400, streakDone: false },
+          { day: 'Fri', steps: 6810, streakDone: true },
+          { day: 'Sat', steps: 8120, streakDone: true },
+          { day: 'Sun', steps: 3172, streakDone: false } // Today (live synced with state.steps)
+        ],
+        challenges: {
+          walking: { id: 'walking', title: 'Walking', points: 80, started: false, completed: false },
+          hydration: { id: 'hydration', title: 'Hydration', points: 40, started: false, completed: false },
+          sleep: { id: 'sleep', title: 'Sleep', points: 70, started: false, completed: false }
+        },
+        vouchers: [
+          { id: 'v1', name: 'Tealive RM5 Off Drink', partner: 'Tealive Malaysia', cost: 150, redeemed: false, code: 'KKM-TL-8492' },
+          { id: 'v2', name: 'GrabFood RM8 Healthy Meal', partner: 'Grab Malaysia', cost: 250, redeemed: false, code: 'KKM-GF-3107' },
+          { id: 'v3', name: "Lotus's RM10 Fresh Produce", partner: "Lotus's Stores", cost: 300, redeemed: false, code: 'KKM-LT-5521' },
+          { id: 'v4', name: 'Decathlon RM15 Sports Gear', partner: 'Decathlon MY', cost: 400, redeemed: false, code: 'KKM-DC-9044' }
+        ],
+        settings: {
+          reminderTime: '20:00',
+          smartReminder: true,
+          largerText: false,
+          offlineMode: false,
+          displayMode: 'light', // 'light' | 'dark' | 'high-contrast'
+          privacyResearch: false,
+          privacyWearable: false,
+          privacyTips: false
+        },
+        pendingUndo: null,
+        pendingVoucherId: null,
+        toastTimer: null
+      };
+
+      // Helper: Format time '22:30' -> '10:30 PM'
+      function formatTime12(hhmm) {
+        if (!hhmm) return '';
+        const parts = hhmm.split(':');
+        let h = parseInt(parts[0], 10);
+        const m = parts[1];
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        h = h % 12;
+        if (h === 0) h = 12;
+        return h + ':' + m + ' ' + ampm;
+      }
+
+      function parseMinutes(hhmm) {
+        const parts = hhmm.split(':');
+        return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+      }
+
+      function getTargets() {
+        return DIFFICULTY_PRESETS[state.difficulty];
+      }
+
+      function snapshotForUndo() {
+        return {
+          steps: state.steps,
+          water: state.water,
+          loggedBedtime: state.loggedBedtime,
+          points: state.points,
+          streakDays: state.streakDays,
+          dailyChallengesCompletedCount: state.dailyChallengesCompletedCount,
+          challenges: {
+            walking: Object.assign({}, state.challenges.walking),
+            hydration: Object.assign({}, state.challenges.hydration),
+            sleep: Object.assign({}, state.challenges.sleep)
+          }
+        };
+      }
+
+      function restoreSnapshot(snap) {
+        state.steps = snap.steps;
+        state.water = snap.water;
+        state.loggedBedtime = snap.loggedBedtime;
+        state.points = snap.points;
+        state.streakDays = snap.streakDays;
+        state.dailyChallengesCompletedCount = snap.dailyChallengesCompletedCount;
+        state.challenges.walking = Object.assign({}, snap.challenges.walking);
+        state.challenges.hydration = Object.assign({}, snap.challenges.hydration);
+        state.challenges.sleep = Object.assign({}, snap.challenges.sleep);
+        state.weeklyHistory[6].steps = state.steps;
+        hideWaterLimitWarning();
+        renderAll();
+      }
+
+      // Toast with UNDO
+      function showToast(message, undoSnap) {
+        const toastBox = document.getElementById('toastBox');
+        const toastMsg = document.getElementById('toastMsg');
+        const undoBtn = document.getElementById('toastUndoBtn');
+
+        toastMsg.textContent = message;
+        state.pendingUndo = undoSnap || null;
+        undoBtn.style.display = state.pendingUndo ? 'inline-block' : 'none';
+
+        toastBox.classList.remove('visible');
+        void toastBox.offsetWidth;
+        toastBox.classList.add('visible');
+
+        if (state.toastTimer) clearTimeout(state.toastTimer);
+        state.toastTimer = setTimeout(function () {
+          toastBox.classList.remove('visible');
+        }, 4800);
+      }
+
+      document.getElementById('toastUndoBtn').addEventListener('click', function () {
+        if (state.pendingUndo) {
+          const snap = state.pendingUndo;
+          state.pendingUndo = null;
+          restoreSnapshot(snap);
+          showToast('Action undone');
+        }
+      });
+
+      // Points animation
+      function awardPoints(amount) {
+        if (amount <= 0) return;
+        state.points += amount;
+
+        const chip = document.getElementById('topPointsChip');
+        const delta = document.getElementById('pointsDelta');
+        delta.textContent = '+' + amount;
+
+        chip.classList.remove('pop');
+        delta.classList.remove('show');
+        void chip.offsetWidth;
+        chip.classList.add('pop');
+        delta.classList.add('show');
+      }
+
+      // Each challenge has its own independent closure for completion
+      function createChallengeCompleter(challengeKey) {
+        return function completeSpecificChallenge() {
+          const ch = state.challenges[challengeKey];
+          if (!ch || ch.completed) return;
+
+          ch.started = true;
+          ch.completed = true;
+          state.dailyChallengesCompletedCount += 1;
+
+          // Update today's streak bar if first daily completion today
+          if (!state.weeklyHistory[6].streakDone) {
+            state.weeklyHistory[6].streakDone = true;
+            state.streakDays += 1;
+          }
+
+          awardPoints(ch.points);
+          renderAll();
+          openCompletionModal(ch);
+        };
+      }
+
+      const completeWalkingChallenge = createChallengeCompleter('walking');
+      const completeHydrationChallenge = createChallengeCompleter('hydration');
+      const completeSleepChallenge = createChallengeCompleter('sleep');
+
+      function checkChallengeCompletions() {
+        const targets = getTargets();
+        if (state.challenges.walking.started && !state.challenges.walking.completed && state.steps >= targets.stepsTarget) {
+          completeWalkingChallenge();
+        }
+        if (state.challenges.hydration.started && !state.challenges.hydration.completed && state.water >= targets.waterTarget) {
+          completeHydrationChallenge();
+        }
+        if (state.challenges.sleep.started && !state.challenges.sleep.completed && state.loggedBedtime) {
+          completeSleepChallenge();
+        }
+      }
+
+      // Completion Modal
+      function openCompletionModal(challengeObj) {
+        const modal = document.getElementById('completionModal');
+        document.getElementById('compModalDesc').textContent =
+          'You completed today\'s ' + challengeObj.title + ' challenge!';
+        document.getElementById('compModalPts').textContent = '+' + challengeObj.points + ' points';
+        document.getElementById('compModalChallengeName').textContent = challengeObj.title + ' Challenge';
+        modal.classList.add('open');
+      }
+
+      function closeCompletionModal() {
+        document.getElementById('completionModal').classList.remove('open');
+      }
+
+      document.getElementById('btnCompViewRewards').addEventListener('click', function () {
+        closeCompletionModal();
+        switchTab('rewards');
+      });
+
+      document.getElementById('btnCompBackHome').addEventListener('click', function () {
+        closeCompletionModal();
+        switchTab('home');
+      });
+
+      // Navigation
+      function switchTab(tabName) {
+        state.activeTab = tabName;
+        document.querySelectorAll('.screen').forEach(function (el) {
+          el.classList.toggle('active', el.id === 'screen-' + tabName);
+        });
+        document.querySelectorAll('.nav-btn').forEach(function (btn) {
+          const isActive = btn.getAttribute('data-tab') === tabName;
+          btn.classList.toggle('active', isActive);
+          if (isActive) {
+            btn.setAttribute('aria-current', 'page');
+          } else {
+            btn.removeAttribute('aria-current');
+          }
+        });
+        const scroller = document.querySelector('.main-scroll');
+        if (scroller) scroller.scrollTop = 0;
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          switchTab(btn.getAttribute('data-tab'));
+        });
+      });
+
+      document.getElementById('topPointsChip').addEventListener('click', function () {
+        switchTab('rewards');
+      });
+
+      document.getElementById('btnViewChallenge').addEventListener('click', function () {
+        switchTab('challenges');
+      });
+
+      // Water Limit Warning
+      function showWaterLimitWarning() {
+        const alertEl = document.getElementById('waterLimitAlert');
+        alertEl.classList.add('visible');
+        showToast('Daily water goal reached! You cannot exceed ' + getTargets().waterTarget + ' glasses.');
+      }
+
+      function hideWaterLimitWarning() {
+        document.getElementById('waterLimitAlert').classList.remove('visible');
+      }
+
+      // Core Actions
+      function addSteps(amount, sourceLabel) {
+        const snap = snapshotForUndo();
+        state.steps += amount;
+        state.weeklyHistory[6].steps = state.steps;
+        renderAll();
+        showToast((sourceLabel || ('Added +' + amount.toLocaleString() + ' steps')), snap);
+        checkChallengeCompletions();
+      }
+
+      function addWater(glasses) {
+        const targets = getTargets();
+        if (state.water >= targets.waterTarget) {
+          showWaterLimitWarning();
+          return;
+        }
+        const snap = snapshotForUndo();
+        const nextVal = state.water + glasses;
+        if (nextVal > targets.waterTarget) {
+          state.water = targets.waterTarget;
+          renderAll();
+          showWaterLimitWarning();
+          showToast('Reached daily goal (' + targets.waterTarget + '/' + targets.waterTarget + ' glasses)', snap);
+        } else {
+          state.water = nextVal;
+          hideWaterLimitWarning();
+          renderAll();
+          showToast('Logged +' + glasses + (glasses === 1 ? ' glass' : ' glasses') + ' of water', snap);
+        }
+        checkChallengeCompletions();
+      }
+
+      function removeWater() {
+        if (state.water <= 0) {
+          showToast('Water intake is already at 0 glasses');
+          return;
+        }
+        const snap = snapshotForUndo();
+        state.water -= 1;
+        hideWaterLimitWarning();
+        renderAll();
+        showToast('Removed 1 glass of water', snap);
+      }
+
+      function logBedtime(hhmm) {
+        const snap = snapshotForUndo();
+        state.selectedBedtime = hhmm;
+        state.loggedBedtime = hhmm;
+        renderAll();
+        showToast('Bedtime logged: ' + formatTime12(hhmm), snap);
+        checkChallengeCompletions();
+      }
+
+      // Home Quick Actions
+      document.getElementById('btnHomeAddSteps').addEventListener('click', function () {
+        addSteps(500);
+      });
+
+      document.getElementById('btnHomeAddWater').addEventListener('click', function () {
+        addWater(1);
+      });
+
+      document.getElementById('btnHomeLogSleep').addEventListener('click', function () {
+        logBedtime(state.selectedBedtime);
+      });
+
+      // Challenges Difficulty & Start Handlers
+      function setDifficulty(level) {
+        state.difficulty = level;
+        const targets = getTargets();
+        if (state.water > targets.waterTarget) {
+          state.water = targets.waterTarget;
+        }
+        hideWaterLimitWarning();
+        renderAll();
+        showToast('Difficulty set to ' + targets.label);
+      }
+
+      document.querySelectorAll('[data-diff]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setDifficulty(btn.getAttribute('data-diff'));
+        });
+      });
+
+      document.getElementById('btnStartWalking').addEventListener('click', function () {
+        const ch = state.challenges.walking;
+        const targets = getTargets();
+        if (ch.completed) {
+          showToast('Walking challenge already completed today');
+          return;
+        }
+        if (!ch.started) {
+          ch.started = true;
+          renderAll();
+          if (state.steps >= targets.stepsTarget) {
+            completeWalkingChallenge();
+          } else {
+            showToast('Walking challenge started! Keep moving');
+          }
+        } else {
+          // Allow logging directly or completing if target reached
+          if (state.steps >= targets.stepsTarget) {
+            completeWalkingChallenge();
+          } else {
+            addSteps(500);
+          }
+        }
+      });
+
+      document.getElementById('btnStartHydration').addEventListener('click', function () {
+        const ch = state.challenges.hydration;
+        const targets = getTargets();
+        if (ch.completed) {
+          showToast('Hydration challenge already completed today');
+          return;
+        }
+        if (!ch.started) {
+          ch.started = true;
+          renderAll();
+          if (state.water >= targets.waterTarget) {
+            completeHydrationChallenge();
+          } else {
+            showToast('Hydration challenge started!');
+          }
+        } else {
+          if (state.water >= targets.waterTarget) {
+            completeHydrationChallenge();
+          } else {
+            addWater(1);
+          }
+        }
+      });
+
+      document.getElementById('btnStartSleep').addEventListener('click', function () {
+        const ch = state.challenges.sleep;
+        if (ch.completed) {
+          showToast('Sleep challenge already completed today');
+          return;
+        }
+        if (!ch.started) {
+          ch.started = true;
+          renderAll();
+          if (state.loggedBedtime) {
+            completeSleepChallenge();
+          } else {
+            showToast('Sleep challenge started! Log your bedtime');
+          }
+        } else {
+          logBedtime(state.selectedBedtime);
+        }
+      });
+
+      // Activity Tracker Actions
+      document.getElementById('btnActAddWater').addEventListener('click', function () {
+        addWater(1);
+      });
+
+      document.getElementById('btnActRemoveWater').addEventListener('click', function () {
+        removeWater();
+      });
+
+      document.getElementById('btnActAddSteps').addEventListener('click', function () {
+        addSteps(500);
+      });
+
+      document.getElementById('btnSyncWearable').addEventListener('click', function () {
+        const statusEl = document.getElementById('actWearableStatus');
+        statusEl.textContent = 'Syncing wearable...';
+        setTimeout(function () {
+          statusEl.textContent = 'Synced just now';
+          addSteps(1250, 'Wearable synced (+1,250 steps)');
+        }, 280);
+      });
+
+      document.querySelectorAll('.preset-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.selectedBedtime = btn.getAttribute('data-bedtime');
+          renderAll();
+        });
+      });
+
+      document.getElementById('btnActLogSleep').addEventListener('click', function () {
+        logBedtime(state.selectedBedtime);
+      });
+
+      document.getElementById('btnActUndoSleep').addEventListener('click', function () {
+        if (!state.loggedBedtime) {
+          showToast('No bedtime logged yet');
+          return;
+        }
+        const snap = snapshotForUndo();
+        state.loggedBedtime = null;
+        renderAll();
+        showToast('Bedtime log cleared', snap);
+      });
+
+      // Voice Command Parser
+      function handleVoiceCommand(rawText) {
+        const text = (rawText || '').trim().toLowerCase();
+        if (!text) {
+          showToast('Enter a command, e.g. "add 2 glasses of water"');
+          return;
+        }
+
+        if (text.includes('water') || text.includes('glass')) {
+          const numMatch = text.match(/(\d+)/);
+          const count = numMatch ? Math.max(1, parseInt(numMatch[1], 10)) : 1;
+          if (text.includes('remove') || text.includes('minus') || text.includes('undo')) {
+            removeWater();
+          } else {
+            addWater(count);
+          }
+          return;
+        }
+
+        if (text.includes('step') || text.includes('walk')) {
+          const numMatch = text.match(/(\d+)/);
+          const steps = numMatch ? Math.max(100, parseInt(numMatch[1], 10)) : 500;
+          addSteps(steps);
+          return;
+        }
+
+        if (text.includes('sleep') || text.includes('bed') || text.includes('pm') || text.includes('am')) {
+          const timeMatch = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/);
+          let hhmm = state.selectedBedtime;
+          if (timeMatch) {
+            let h = parseInt(timeMatch[1], 10);
+            const m = timeMatch[2] || '00';
+            const mer = timeMatch[3];
+            if (mer === 'pm' && h < 12) h += 12;
+            if (mer === 'am' && h === 12) h = 0;
+            hhmm = String(h).padStart(2, '0') + ':' + m;
+          }
+          logBedtime(hhmm);
+          return;
+        }
+
+        showToast('Try: "add 2 glasses of water", "add 500 steps", or "log bedtime 10:45 pm"');
+      }
+
+      document.getElementById('voiceForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const input = document.getElementById('voiceInput');
+        handleVoiceCommand(input.value);
+        input.value = '';
+      });
+
+      document.querySelectorAll('.quick-cmd').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const cmd = btn.getAttribute('data-cmd');
+          document.getElementById('voiceInput').value = cmd;
+          handleVoiceCommand(cmd);
+        });
+      });
+
+      document.getElementById('btnVoiceMic').addEventListener('click', function () {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRec) {
+          document.getElementById('voiceInput').focus();
+          showToast('Tap a quick command or type your activity');
+          return;
+        }
+        try {
+          const rec = new SpeechRec();
+          rec.lang = 'en-MY';
+          rec.onresult = function (evt) {
+            const transcript = evt.results[0][0].transcript;
+            document.getElementById('voiceInput').value = transcript;
+            handleVoiceCommand(transcript);
+          };
+          rec.onerror = function () {
+            document.getElementById('voiceInput').focus();
+            showToast('Voice unavailable — type or tap a quick command');
+          };
+          rec.start();
+          showToast('Listening... speak your command');
+        } catch (err) {
+          document.getElementById('voiceInput').focus();
+          showToast('Voice unavailable — type or tap a quick command');
+        }
+      });
+
+      // Voucher Redemption Confirmation
+      function openVoucherModal(voucher) {
+        if (voucher.redeemed) return;
+        if (state.points < voucher.cost) {
+          const need = voucher.cost - state.points;
+          showToast('Need ' + need + ' more points to redeem this voucher');
+          return;
+        }
+        state.pendingVoucherId = voucher.id;
+        document.getElementById('voucherModalTitle').textContent = 'Redeem ' + voucher.name + '?';
+        document.getElementById('voucherModalDesc').textContent = 'Issued by ' + voucher.partner + ' via KKM Rewards.';
+        document.getElementById('voucherModalCost').textContent = '-' + voucher.cost + ' points';
+        document.getElementById('voucherModalBalance').textContent =
+          'Remaining balance after redeem: ' + (state.points - voucher.cost) + ' points';
+        document.getElementById('voucherModal').classList.add('open');
+      }
+
+      function closeVoucherModal() {
+        state.pendingVoucherId = null;
+        document.getElementById('voucherModal').classList.remove('open');
+      }
+
+      document.getElementById('btnCancelRedeem').addEventListener('click', closeVoucherModal);
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closeCompletionModal();
+          closeVoucherModal();
+        }
+      });
+
+      document.getElementById('btnConfirmRedeem').addEventListener('click', function () {
+        const voucher = state.vouchers.find(function (v) { return v.id === state.pendingVoucherId; });
+        if (voucher && state.points >= voucher.cost && !voucher.redeemed) {
+          state.points -= voucher.cost;
+          voucher.redeemed = true;
+          closeVoucherModal();
+          renderAll();
+          showToast('Redeemed! Code: ' + voucher.code);
+        } else {
+          closeVoucherModal();
+        }
+      });
+
+      // Profile Settings Toggles
+      function bindSwitch(id, settingKey, labelOn, labelOff) {
+        const btn = document.getElementById(id);
+        btn.addEventListener('click', function () {
+          state.settings[settingKey] = !state.settings[settingKey];
+          renderAll();
+          showToast(state.settings[settingKey] ? labelOn : labelOff);
+        });
+      }
+
+      bindSwitch('toggleSmartReminder', 'smartReminder', 'Smart reminder enabled', 'Smart reminder turned off');
+      bindSwitch('toggleLargerText', 'largerText', 'Larger text enabled', 'Standard text size restored');
+      bindSwitch('toggleOfflineMode', 'offlineMode', 'Offline mode enabled', 'Online sync mode active');
+      bindSwitch('togglePrivacyResearch', 'privacyResearch', 'Anonymised KKM research opted in', 'Research sharing off');
+      bindSwitch('togglePrivacyWearable', 'privacyWearable', 'Background wearable sync enabled', 'Background wearable sync off');
+      bindSwitch('togglePrivacyTips', 'privacyTips', 'Campus wellness tips enabled', 'Campus wellness tips off');
+
+      document.getElementById('reminderTimePicker').addEventListener('change', function (e) {
+        state.settings.reminderTime = e.target.value || '20:00';
+        showToast('Daily reminder set for ' + formatTime12(state.settings.reminderTime));
+      });
+
+      document.querySelectorAll('[data-theme-btn]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          state.settings.displayMode = btn.getAttribute('data-theme-btn');
+          renderAll();
+          const label = state.settings.displayMode === 'high-contrast'
+            ? 'High-contrast mode'
+            : state.settings.displayMode.charAt(0).toUpperCase() + state.settings.displayMode.slice(1) + ' mode';
+          showToast(label + ' active');
+        });
+      });
+
+      // Render Functions
+      function renderAll() {
+        const targets = getTargets();
+
+        // Theme & Text Scale & Offline Banner
+        document.documentElement.setAttribute('data-theme', state.settings.displayMode);
+        document.documentElement.setAttribute('data-large-text', state.settings.largerText ? 'true' : 'false');
+        document.getElementById('offlineBanner').classList.toggle('visible', state.settings.offlineMode);
+
+        // Top Bar Points
+        document.getElementById('topPointsText').textContent = state.points + ' points';
+
+        // Calculate percentages
+        const walkPct = Math.min(100, Math.round((state.steps / targets.stepsTarget) * 100));
+        const waterPct = Math.min(100, Math.round((state.water / targets.waterTarget) * 100));
+        const sleepPct = state.loggedBedtime ? 100 : 0;
+        const overallPct = Math.round((walkPct + waterPct + sleepPct) / 3);
+
+        // 1. HOME RENDER
+        document.getElementById('homeLevelSubtitle').textContent = targets.label + ' level · Quick daily check-in';
+        const circumference = 2 * Math.PI * 40;
+        const offset = circumference - (overallPct / 100) * circumference;
+        document.getElementById('homeRingFill').style.strokeDashoffset = offset.toFixed(1);
+        document.getElementById('homeRingPct').textContent = overallPct + '%';
+        document.getElementById('homeStreakText').textContent = state.streakDays + '-day streak';
+        document.getElementById('homeProgressSummary').textContent =
+          overallPct >= 100 ? 'All daily habits completed!' :
+          overallPct >= 65 ? 'Great momentum — almost there!' :
+          'Keep going — 1 tap logs progress';
+        document.getElementById('homeGoalDetails').textContent =
+          'Walking ' + walkPct + '% · Water ' + waterPct + '% · Sleep ' + (state.loggedBedtime ? 'Done' : 'Pending');
+
+        // Challenge of the Day (Walking primary, or next uncompleted challenge)
+        let featured = state.challenges.walking;
+        let featuredPct = walkPct;
+        let featuredDesc = 'Walk ' + targets.stepsTarget.toLocaleString() + ' steps today to earn your daily bonus.';
+        let featuredProgressText = state.steps.toLocaleString() + ' / ' + targets.stepsTarget.toLocaleString() + ' steps';
+        if (state.challenges.walking.completed && !state.challenges.hydration.completed) {
+          featured = state.challenges.hydration;
+          featuredPct = waterPct;
+          featuredDesc = 'Drink ' + targets.waterTarget + ' glasses of water today.';
+          featuredProgressText = state.water + ' / ' + targets.waterTarget + ' glasses';
+        } else if (state.challenges.walking.completed && state.challenges.hydration.completed && !state.challenges.sleep.completed) {
+          featured = state.challenges.sleep;
+          featuredPct = sleepPct;
+          featuredDesc = 'Log bedtime by ' + targets.sleepTarget + ' tonight.';
+          featuredProgressText = state.loggedBedtime ? 'Logged: ' + formatTime12(state.loggedBedtime) : 'Not logged yet';
+        }
+
+        document.getElementById('cotdTitle').textContent = featured.title + ' Challenge';
+        document.getElementById('cotdPts').textContent = '+' + featured.points + ' points';
+        document.getElementById('cotdDesc').textContent = featuredDesc;
+        document.getElementById('cotdBar').style.width = featuredPct + '%';
+        document.getElementById('cotdProgressText').textContent = featuredProgressText;
+        document.getElementById('cotdPctText').textContent = featuredPct + '%';
+
+        // Home Tiles
+        document.getElementById('homeStepsVal').textContent = state.steps.toLocaleString();
+        document.getElementById('homeStepsTarget').textContent = '/ ' + targets.stepsTarget.toLocaleString();
+        document.getElementById('homeStepsBar').style.width = walkPct + '%';
+
+        document.getElementById('homeWaterVal').textContent = state.water;
+        document.getElementById('homeWaterTarget').textContent = '/ ' + targets.waterTarget + ' glasses';
+        document.getElementById('homeWaterBar').style.width = waterPct + '%';
+
+        const sleepOnTarget = state.loggedBedtime && parseMinutes(state.loggedBedtime) <= targets.sleepMinutesLimit;
+        document.getElementById('homeSleepTarget').textContent = 'Sleep · Target by ' + targets.sleepTarget;
+        document.getElementById('homeSleepStatus').textContent = state.loggedBedtime
+          ? 'Logged: ' + formatTime12(state.loggedBedtime) + (sleepOnTarget ? ' (On target)' : '')
+          : 'Not logged tonight';
+        document.getElementById('btnHomeLogSleep').textContent = state.loggedBedtime ? 'Update bedtime' : 'Log bedtime';
+
+        // 2. CHALLENGES RENDER
+        document.querySelectorAll('[data-diff]').forEach(function (btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-diff') === state.difficulty);
+        });
+        document.getElementById('diffTargetsSummary').textContent =
+          'Targets: ' + targets.stepsTarget.toLocaleString() + ' steps · ' + targets.waterTarget + ' glasses · Sleep by ' + targets.sleepTarget;
+
+        document.getElementById('chWalkDesc').textContent = 'Walk ' + targets.stepsTarget.toLocaleString() + ' steps today (brisk campus walk or stairs).';
+        document.getElementById('chWalkBar').style.width = walkPct + '%';
+        document.getElementById('chWalkText').textContent = state.steps.toLocaleString() + ' / ' + targets.stepsTarget.toLocaleString() + ' steps';
+        document.getElementById('chWalkPct').textContent = walkPct + '%';
+
+        const btnWalk = document.getElementById('btnStartWalking');
+        if (state.challenges.walking.completed) {
+          btnWalk.textContent = 'Completed (+80 points earned)';
+          btnWalk.disabled = true;
+        } else if (state.challenges.walking.started) {
+          btnWalk.textContent = state.steps >= targets.stepsTarget ? 'Complete & claim +80 points' : 'In progress · +500 steps';
+          btnWalk.disabled = false;
+        } else {
+          btnWalk.textContent = 'Start challenge';
+          btnWalk.disabled = false;
+        }
+
+        document.getElementById('chWaterDesc').textContent = 'Drink ' + targets.waterTarget + ' glasses of plain water today.';
+        document.getElementById('chWaterBar').style.width = waterPct + '%';
+        document.getElementById('chWaterText').textContent = state.water + ' / ' + targets.waterTarget + ' glasses';
+        document.getElementById('chWaterPct').textContent = waterPct + '%';
+
+        const btnHydr = document.getElementById('btnStartHydration');
+        if (state.challenges.hydration.completed) {
+          btnHydr.textContent = 'Completed (+40 points earned)';
+          btnHydr.disabled = true;
+        } else if (state.challenges.hydration.started) {
+          btnHydr.textContent = state.water >= targets.waterTarget ? 'Complete & claim +40 points' : 'In progress · +1 glass';
+          btnHydr.disabled = false;
+        } else {
+          btnHydr.textContent = 'Start challenge';
+          btnHydr.disabled = false;
+        }
+
+        document.getElementById('chSleepDesc').textContent = 'Log bedtime by ' + targets.sleepTarget + ' for 7–8 hours rest.';
+        document.getElementById('chSleepBar').style.width = sleepPct + '%';
+        document.getElementById('chSleepText').textContent = state.loggedBedtime ? 'Logged: ' + formatTime12(state.loggedBedtime) : 'Not logged yet';
+        document.getElementById('chSleepPct').textContent = sleepPct + '%';
+
+        const btnSlp = document.getElementById('btnStartSleep');
+        if (state.challenges.sleep.completed) {
+          btnSlp.textContent = 'Completed (+70 points earned)';
+          btnSlp.disabled = true;
+        } else if (state.challenges.sleep.started) {
+          btnSlp.textContent = 'In progress · Log bedtime now';
+          btnSlp.disabled = false;
+        } else {
+          btnSlp.textContent = 'Start challenge';
+          btnSlp.disabled = false;
+        }
+
+        // 3. ACTIVITY TRACKER RENDER
+        document.getElementById('actWaterCount').textContent = state.water + ' / ' + targets.waterTarget;
+        const glassesGrid = document.getElementById('glassesGrid');
+        glassesGrid.innerHTML = '';
+        for (let i = 0; i < targets.waterTarget; i++) {
+          const isFilled = i < state.water;
+          const div = document.createElement('div');
+          div.className = 'glass-item' + (isFilled ? ' filled' : '');
+          div.setAttribute('aria-label', 'Glass ' + (i + 1) + (isFilled ? ' filled' : ' empty'));
+          div.innerHTML =
+            '<svg width="32" height="40" viewBox="0 0 32 40" aria-hidden="true">' +
+            '<defs><clipPath id="gclip-' + i + '"><path d="M5 4h22l-2.5 32a2 2 0 0 1-2 1.8H9.5a2 2 0 0 1-2-1.8L5 4z"/></clipPath></defs>' +
+            '<rect class="glass-water-fill" x="4" y="' + (isFilled ? '11' : '39') + '" width="24" height="' + (isFilled ? '28' : '0') + '" fill="var(--water)" opacity="0.85" clip-path="url(#gclip-' + i + ')"/>' +
+            '<path d="M5 4h22l-2.5 32a2 2 0 0 1-2 1.8H9.5a2 2 0 0 1-2-1.8L5 4z" fill="none" stroke="' + (isFilled ? 'var(--water)' : 'var(--border)') + '" stroke-width="2.2" stroke-linejoin="round"/>' +
+            '</svg>';
+          glassesGrid.appendChild(div);
+        }
+
+        document.getElementById('actStepsCount').textContent = state.steps.toLocaleString() + ' / ' + targets.stepsTarget.toLocaleString();
+        document.getElementById('actStepsBar').style.width = walkPct + '%';
+        document.getElementById('actStepsPct').textContent = walkPct + '% of daily goal';
+
+        document.getElementById('actSleepTargetLabel').textContent = 'Sleep · Target by ' + targets.sleepTarget;
+        document.getElementById('actSleepLoggedVal').textContent = state.loggedBedtime
+          ? formatTime12(state.loggedBedtime) + (sleepOnTarget ? ' · On target' : '')
+          : 'Not logged';
+        document.querySelectorAll('.preset-btn').forEach(function (btn) {
+          btn.classList.toggle('selected', btn.getAttribute('data-bedtime') === state.selectedBedtime);
+        });
+
+        // 4. PROGRESS SCREEN RENDER
+        const totalWeekSteps = state.weeklyHistory.reduce(function (sum, d) { return sum + d.steps; }, 0);
+        const avgWeekSteps = Math.round(totalWeekSteps / state.weeklyHistory.length);
+        const maxSteps = Math.max.apply(null, state.weeklyHistory.map(function (d) { return d.steps; }).concat([targets.stepsTarget]));
+
+        document.getElementById('progWeeklyAvg').innerHTML = avgWeekSteps.toLocaleString() + ' <span class="num-unit">steps / day</span>';
+        document.getElementById('progTargetChip').textContent = 'Goal: ' + targets.stepsTarget.toLocaleString();
+        document.getElementById('progWeeklyTotal').textContent = 'Total this week: ' + totalWeekSteps.toLocaleString() + ' steps across 7 days';
+
+        const chartEl = document.getElementById('weeklyBarChart');
+        chartEl.innerHTML = '';
+        state.weeklyHistory.forEach(function (entry, idx) {
+          const isToday = idx === 6;
+          const heightPct = Math.max(8, Math.round((entry.steps / maxSteps) * 100));
+          const metGoal = entry.steps >= targets.stepsTarget;
+
+          const col = document.createElement('div');
+          col.className = 'chart-col';
+          col.innerHTML =
+            '<span class="chart-val tabular">' + entry.steps.toLocaleString() + '</span>' +
+            '<div class="chart-bar-wrap">' +
+            '  <div class="chart-bar' + (metGoal ? ' goal-met' : '') + (isToday ? ' today' : '') + '" style="height:' + heightPct + '%" title="' + entry.day + ': ' + entry.steps.toLocaleString() + ' steps"></div>' +
+            '</div>' +
+            '<span class="chart-day' + (isToday ? ' today' : '') + '">' + entry.day + '</span>';
+          chartEl.appendChild(col);
+        });
+
+        document.getElementById('progStreakBadge').textContent = state.streakDays + '-day streak';
+        document.getElementById('progStreakNote').textContent = state.weeklyHistory[6].streakDone
+          ? "Today's streak is locked in! You're on a " + state.streakDays + '-day streak.'
+          : 'Complete a daily challenge today to extend your streak to ' + (state.streakDays + 1) + ' days.';
+        const streakGrid = document.getElementById('streakBarGrid');
+        streakGrid.innerHTML = '';
+        state.weeklyHistory.forEach(function (entry) {
+          const box = document.createElement('div');
+          box.className = 'streak-day-box' + (entry.streakDone ? ' done' : '');
+          box.innerHTML =
+            '<span>' + entry.day + '</span>' +
+            '<span aria-hidden="true">' + (entry.streakDone ? '✓' : '·') + '</span>';
+          streakGrid.appendChild(box);
+        });
+
+        // 5. REWARDS SCREEN RENDER
+        document.getElementById('rewardsTotalPts').textContent = state.points + ' points';
+        const achCount = Math.min(5, state.dailyChallengesCompletedCount);
+        const achPct = Math.round((achCount / 5) * 100);
+        document.getElementById('nextAchBar').style.width = achPct + '%';
+        document.getElementById('nextAchCount').textContent = achCount + ' / 5 completed';
+        document.getElementById('nextAchPct').textContent = achPct + '%';
+
+        const badges = [
+          {
+            name: 'Hydration',
+            unlocked: state.challenges.hydration.completed || state.water >= targets.waterTarget,
+            icon: '💧',
+            desc: 'Reach daily water goal'
+          },
+          {
+            name: 'Walker',
+            unlocked: state.challenges.walking.completed || state.steps >= targets.stepsTarget,
+            icon: '👟',
+            desc: 'Hit daily step goal'
+          },
+          {
+            name: 'Sleep owl',
+            unlocked: state.challenges.sleep.completed || Boolean(state.loggedBedtime),
+            icon: '🦉',
+            desc: 'Log healthy bedtime'
+          },
+          {
+            name: '3-day streak',
+            unlocked: state.streakDays >= 3,
+            icon: '🔥',
+            desc: 'Stay active 3 days running'
+          }
+        ];
+
+        const badgesGrid = document.getElementById('badgesGrid');
+        badgesGrid.innerHTML = '';
+        badges.forEach(function (b) {
+          const card = document.createElement('div');
+          card.className = 'badge-card' + (b.unlocked ? ' unlocked' : '');
+          card.innerHTML =
+            '<div class="badge-icon" aria-hidden="true">' + (b.unlocked ? b.icon : '🔒') + '</div>' +
+            '<div class="badge-name">' + b.name + '</div>' +
+            '<div class="badge-status">' + (b.unlocked ? 'Unlocked · ' + b.desc : '🔒 Locked · ' + b.desc) + '</div>';
+          badgesGrid.appendChild(card);
+        });
+
+        const voucherList = document.getElementById('voucherList');
+        voucherList.innerHTML = '';
+        state.vouchers.forEach(function (v) {
+          const row = document.createElement('div');
+          row.className = 'voucher-row';
+
+          const info = document.createElement('div');
+          info.className = 'voucher-info';
+          info.innerHTML =
+            '<div class="voucher-title">' + v.name + '</div>' +
+            '<div class="voucher-sub tabular">' + v.partner + ' · ' + v.cost + ' points</div>' +
+            (v.redeemed ? '<div class="redeem-code tabular">Claim code: ' + v.code + '</div>' : '');
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = v.redeemed ? 'btn btn-outline' : 'btn btn-primary';
+          btn.textContent = v.redeemed ? 'Redeemed' : 'Redeem';
+          btn.disabled = v.redeemed;
+          btn.addEventListener('click', function () {
+            openVoucherModal(v);
+          });
+
+          row.appendChild(info);
+          row.appendChild(btn);
+          voucherList.appendChild(row);
+        });
+
+        // 6. PROFILE SCREEN RENDER
+        document.getElementById('profileMemberMeta').textContent =
+          'Active level: ' + targets.label + ' · ' + state.points + ' points';
+        document.getElementById('reminderTimePicker').value = state.settings.reminderTime;
+        document.getElementById('toggleSmartReminder').setAttribute('aria-checked', String(state.settings.smartReminder));
+        document.getElementById('toggleLargerText').setAttribute('aria-checked', String(state.settings.largerText));
+        document.getElementById('toggleOfflineMode').setAttribute('aria-checked', String(state.settings.offlineMode));
+        document.getElementById('togglePrivacyResearch').setAttribute('aria-checked', String(state.settings.privacyResearch));
+        document.getElementById('togglePrivacyWearable').setAttribute('aria-checked', String(state.settings.privacyWearable));
+        document.getElementById('togglePrivacyTips').setAttribute('aria-checked', String(state.settings.privacyTips));
+
+        document.querySelectorAll('[data-theme-btn]').forEach(function (btn) {
+          btn.classList.toggle('active', btn.getAttribute('data-theme-btn') === state.settings.displayMode);
+        });
+      }
+
+      // Initial render
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
